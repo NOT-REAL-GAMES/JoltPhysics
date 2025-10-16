@@ -319,6 +319,14 @@ set(JOLT_PHYSICS_SRC_FILES
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ConstraintPart/SwingTwistConstraintPart.h
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ContactConstraintManager.cpp
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ContactConstraintManager.h
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/CubicBarrier.cpp
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/CubicBarrier.h
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/ElasticityHessian.cpp
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/ElasticityHessian.h
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/ZOZOContactSolver.cpp
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/ZOZOContactSolver.h
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/ZOZOSettings.h
+	${JOLT_PHYSICS_ROOT}/Physics/Constraints/ZOZO/README.md
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/DistanceConstraint.cpp
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/DistanceConstraint.h
 	${JOLT_PHYSICS_ROOT}/Physics/Constraints/FixedConstraint.cpp

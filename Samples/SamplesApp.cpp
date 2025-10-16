@@ -524,6 +524,12 @@ SamplesApp::SamplesApp(const String &inCommandLine) :
 			mDebugUI->CreateCheckBox(phys_settings, "Use Large Island Splitter", mPhysicsSettings.mUseLargeIslandSplitter, [this](UICheckBox::EState inState) { mPhysicsSettings.mUseLargeIslandSplitter = inState == UICheckBox::STATE_CHECKED; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
 			mDebugUI->CreateCheckBox(phys_settings, "Allow Sleeping", mPhysicsSettings.mAllowSleeping, [this](UICheckBox::EState inState) { mPhysicsSettings.mAllowSleeping = inState == UICheckBox::STATE_CHECKED; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
 			mDebugUI->CreateCheckBox(phys_settings, "Check Active Triangle Edges", mPhysicsSettings.mCheckActiveEdges, [this](UICheckBox::EState inState) { mPhysicsSettings.mCheckActiveEdges = inState == UICheckBox::STATE_CHECKED; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
+
+		// ZOZO Contact Solver Settings
+		mDebugUI->CreateCheckBox(phys_settings, "Use ZOZO Solver", mPhysicsSettings.mUseZOZOSolver, [this](UICheckBox::EState inState) { mPhysicsSettings.mUseZOZOSolver = inState == UICheckBox::STATE_CHECKED; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
+		mDebugUI->CreateSlider(phys_settings, "ZOZO Max Gap (m)", mPhysicsSettings.mZOZOMaxGap, 0.001f, 0.1f, 0.005f, [this](float inValue) { mPhysicsSettings.mZOZOMaxGap = inValue; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
+		mDebugUI->CreateSlider(phys_settings, "ZOZO Beta Max", mPhysicsSettings.mZOZOBetaMax, 0.1f, 1.0f, 0.05f, [this](float inValue) { mPhysicsSettings.mZOZOBetaMax = inValue; mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
+		mDebugUI->CreateSlider(phys_settings, "ZOZO Max Newton Steps", float(mPhysicsSettings.mZOZOMaxNewtonSteps), 1, 64, 1, [this](float inValue) { mPhysicsSettings.mZOZOMaxNewtonSteps = uint(round(inValue)); mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings); });
 			mDebugUI->CreateCheckBox(phys_settings, "Record State For Playback", mRecordState, [this](UICheckBox::EState inState) { mRecordState = inState == UICheckBox::STATE_CHECKED; });
 			mDebugUI->CreateCheckBox(phys_settings, "Check Determinism", mCheckDeterminism, [this](UICheckBox::EState inState) { mCheckDeterminism = inState == UICheckBox::STATE_CHECKED; });
 			mDebugUI->CreateCheckBox(phys_settings, "Install Contact Listener", mInstallContactListener, [this](UICheckBox::EState inState) { mInstallContactListener = inState == UICheckBox::STATE_CHECKED; StartTest(mTestClass); });
@@ -713,6 +719,13 @@ void SamplesApp::StartTest(const RTTI *inRTTI)
 	// Create physics system
 	mPhysicsSystem = new PhysicsSystem();
 	mPhysicsSystem->Init(cNumBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, mBroadPhaseLayerInterface, mObjectVsBroadPhaseLayerFilter, mObjectVsObjectLayerFilter);
+
+	// Enable ZOZO contact solver
+	mPhysicsSettings.mUseZOZOSolver = true;
+	mPhysicsSettings.mZOZOMaxGap = 0.02f;
+	mPhysicsSettings.mZOZOBetaMax = 0.25f;
+	mPhysicsSettings.mZOZOMaxNewtonSteps = 32;
+
 	mPhysicsSystem->SetPhysicsSettings(mPhysicsSettings);
 
 	// Restore gravity

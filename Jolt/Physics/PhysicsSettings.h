@@ -120,6 +120,43 @@ struct PhysicsSettings
 	bool		mCheckActiveEdges = true;
 
 	///@}
+
+	///@name ZOZO Contact Solver Settings
+	///@{
+
+	/// Enable ZOZO contact solver instead of Sequential Impulse solver
+	/// Uses cubic barrier energies with elasticity-inclusive dynamic stiffness
+	bool		mUseZOZOSolver = false;
+
+	/// Maximum gap distance where cubic barrier is active (ĝ in paper) (unit: meters)
+	/// Contacts beyond this distance have zero barrier energy
+	float		mZOZOMaxGap = 0.02f;
+
+	/// Target for accumulated step size β before exiting Newton loop (unit: dimensionless)
+	/// Higher values = more accurate but slower, lower values = faster but less accurate
+	float		mZOZOBetaMax = 0.25f;
+
+	/// Search direction extension factor for safety margin (unit: multiplier)
+	/// Line search computes max α for x + 1.25·α·d instead of x + α·d
+	float		mZOZOSearchExtension = 1.25f;
+
+	/// Maximum Newton iterations per timestep
+	uint		mZOZOMaxNewtonSteps = 32;
+
+	/// PCG solver tolerance for linear system solve (unit: dimensionless)
+	/// Convergence criterion: ||residual||_∞ / ||rhs||_∞ < tolerance
+	float		mZOZOPCGTolerance = 1.0e-3f;
+
+	/// Maximum PCG iterations per Newton step
+	uint		mZOZOMaxPCGIterations = 100;
+
+	/// Whether to perform error reduction pass at end
+	bool		mZOZOUseErrorReduction = true;
+
+	/// Whether to use extended search direction (1.25× extension)
+	bool		mZOZOUseExtendedSearch = true;
+
+	///@}
 };
 
 JPH_NAMESPACE_END

@@ -23,12 +23,16 @@ JPH_NAMESPACE_BEGIN
 
 struct PhysicsSettings;
 class PhysicsUpdateContext;
+class ZOZOContactSolver;
 
 /// A contact constraint manager manages all contacts between two bodies
 ///
 /// WARNING: This class is an internal part of PhysicsSystem, it has no functions that can be called by users of the library.
 class JPH_EXPORT ContactConstraintManager : public NonCopyable
 {
+	// Friend class to allow ZOZO solver to access private ContactConstraint
+	friend class ZOZOContactSolver;
+
 public:
 	JPH_OVERRIDE_NEW_DELETE
 
@@ -159,6 +163,10 @@ public:
 
 	/// Get the number of contact constraints that were found
 	uint32						GetNumConstraints() const											{ return min<uint32>(mNumConstraints, mMaxConstraints); }
+
+	/// Get the ZOZO solver instance (for statistics and diagnostics)
+	ZOZOContactSolver *			GetZOZOSolver()														{ return mZOZOSolver; }
+	const ZOZOContactSolver *	GetZOZOSolver() const												{ return mZOZOSolver; }
 
 	/// Sort contact constraints deterministically
 	void						SortContacts(uint32 *inConstraintIdxBegin, uint32 *inConstraintIdxEnd) const;
@@ -519,6 +527,9 @@ private:
 
 	/// Context used for this physics update
 	PhysicsUpdateContext *		mUpdateContext;
+
+	/// ZOZO contact solver (alternative to Sequential Impulse solver)
+	ZOZOContactSolver *			mZOZOSolver = nullptr;
 };
 
 JPH_NAMESPACE_END

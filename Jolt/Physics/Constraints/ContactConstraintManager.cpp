@@ -6,6 +6,7 @@
 
 #include <Jolt/Physics/Constraints/ContactConstraintManager.h>
 #include <Jolt/Physics/Constraints/CalculateSolverSteps.h>
+#include <Jolt/Physics/Constraints/ZOZO/ZOZOContactSolver.h>
 #include <Jolt/Physics/Body/Body.h>
 #include <Jolt/Physics/PhysicsUpdateContext.h>
 #include <Jolt/Physics/PhysicsSettings.h>
@@ -672,11 +673,18 @@ ContactConstraintManager::ContactConstraintManager(const PhysicsSettings &inPhys
 	// For the first frame mark this empty buffer as finalized
 	mCache[mCacheWriteIdx ^ 1].Finalize();
 #endif
+
+	// Create ZOZO solver
+	mZOZOSolver = new ZOZOContactSolver(inPhysicsSettings);
 }
 
 ContactConstraintManager::~ContactConstraintManager()
 {
 	JPH_ASSERT(mConstraints == nullptr);
+
+	// Destroy ZOZO solver
+	delete mZOZOSolver;
+	mZOZOSolver = nullptr;
 }
 
 void ContactConstraintManager::Init(uint inMaxBodyPairs, uint inMaxContactConstraints)
